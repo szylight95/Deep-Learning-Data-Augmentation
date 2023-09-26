@@ -1,6 +1,6 @@
+import cv2
 import random
 
-# Applies image cutout augmentation https://arxiv.org/abs/1708.04552
 def cutout(img):
     h, w = img.shape[:2]
     scales = [0.5] * 1 + [0.25] * 2 + [0.125] * 4 + [0.0625] * 8 + [0.03125] * 16
@@ -15,3 +15,24 @@ def cutout(img):
         ymax = min(h, ymin + mask_h)
 
         img[ymin:ymax, xmin:xmax] = [random.randint(0, 255) for _ in range(3)]
+
+def main():
+    # Load an example image (you should replace this with your own image)
+    image_path = 'example.jpg'
+    img = cv2.imread(image_path)
+
+    if img is None:
+        print(f"Error: Unable to load image from '{image_path}'")
+        return
+
+    # Apply the cutout function
+    cutout(img)
+
+    # Display the original and modified images
+    cv2.imshow('Original Image', cv2.imread(image_path))
+    cv2.imshow('Modified Image', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
